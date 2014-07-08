@@ -1,42 +1,81 @@
-# -*- coding: utf-8 -*-
-'''
-from Tkinter import *
- #tkinter.messagebox
 
-Deskwindow= Tk()
-Deskwindow.title("SMSC ShipmentFile importer      v1.0")
-Deskwindow.geometry('450x450+200+200')
-
-labelText = StringVar()
-labelText.set("Click button")
-label1 = Label(Deskwindow,textvariable=labelText,height=4)
-label1.pack()
-
-checkBoxVal = IntVar()
-checkBox1 = Checkbutton(Deskwindow,variable=checkBoxVal,text="Happy?")
-checkBox1.pack()
-
-
-
-Deskwindow.mainloop()
-'''
-
-from Tkinter import *
-from FileDialog import *
+# -*- coding:utf-8 -*-
+# file: TkinterCanvas.py
+#
+from Tkinter import *         # 导入Tkinter模块
+from PIL import Image, ImageTk
+import tkMessageBox
 import tkFileDialog
 import xlrd 
 import MySQLdb 
 global PATH
-PATH = ""
 
 
 
+
+
+#messagebox
+def ShowInfo():
+	tkMessageBox.showinfo("showinfo demo", '''Thanks For GitHub&python\n
+
+
+
+	Author's Blog: http://blacksheepwall.sinaapp.com''')
+def mAbout():
+	tkMessageBox.showinfo(title="About",message="you cicked New")
+	return
+
+def mShowWarning():
+	tkMessageBox.askretrycancel("askretrycancel demo", "Retry?! Cancel?!")
+	return
+
+def mShowError():
+	tkMessageBox.showerror("showerror demo", "Error")
+	return
+def mAsk():
+	tkMessageBox.askokcancel("askokcancel demo", "OK?! CANCEL?!")
+	return
+
+
+#Real Function	
+
+def donothing():
+   filewin = Toplevel(DeskWindow)
+   button = Button(filewin, text="Do nothing button")
+   button.pack()
+
+def xopen():
+	#fopen = tkFileDialog.askopenfile()
+	#print type(fopen)
+ 	fileroute = tkFileDialog.askopenfilename()
+ 	global PATH
+ 	PATH = fileroute
+ 	
+
+	a = tkMessageBox.askokcancel("Make sure then click OK",
+	 "You are ready to drag data from the following .xls files %s" % fileroute)
+
+	if a:
+		import_xls()
+
+  
+
+
+def about(): 
+	w = Label(DeskWindow,text='''开发者感谢\nGitHub
+		\npython\n
+
+
+
+	作者博客http://blacksheepwall.sinaapp.com''')    
+	w.pack(side=TOP)
 
 
 def import_xls():
 	print "进入import"
+	global PATH
 
-	workbook = xlrd.open_workbook(PATH)
+	workbook = xlrd.open_workbook(PATH )
 
 
 
@@ -101,54 +140,8 @@ def import_xls():
 
 
 
-
-def xopen():
-	#fopen = tkFileDialog.askopenfile()
-	#print type(fopen)
- 	fileroute = tkFileDialog.askopenfilename()
- 	PATH = fileroute
- 	w = Label(DeskWindow,text='''
- %s 
- You are ready to drag data from this .xls file''' % fileroute)    
-	w.pack(side=TOP)
-#	print "%s字符串path" %PATH
-	print PATH
-	ROUTE = PATH
-	ROUTE = ROUTE.replace('/','\\')
-	str1 =  'r' + '"' + ROUTE + '"' 
-#	print type(PATH)
-
-	PATH = str1.encode('utf8')
-	print PATH
-	print type(PATH)
- 	button1 = Button(DeskWindow,text='导入',command=import_xls)
-	button1.pack()
-
-	
-
-
-
-
-
-def about(): 
-	w = Label(DeskWindow,text='''开发者感谢\nGitHub
-		\npython\n
-
-
-
-	作者博客http://blacksheepwall.sinaapp.com''')    
-	w.pack(side=TOP)
-
-
-
-def donothing():
-   filewin = Toplevel(DeskWindow)
-   button = Button(filewin, text="Do nothing button")
-   button.pack()
-   
 DeskWindow = Tk()
 menubar = Menu(DeskWindow)     #manubar是一个横着的菜单
-
 
 #File键list设置
 
@@ -166,29 +159,80 @@ filemenu.add_command(label="Exit", command=DeskWindow.quit)
 menubar.add_cascade(label="File", menu=filemenu) #File作瀑布样
 
 
-'''
-#Edit菜单键设置
-editmenu = Menu(menubar, tearoff=0)
-editmenu.add_command(label="Undo", command=donothing)
 
-editmenu.add_separator()
-
-editmenu.add_command(label="Cut", command=donothing)
-editmenu.add_command(label="Copy", command=donothing)
-editmenu.add_command(label="Paste", command=donothing)
-editmenu.add_command(label="Delete", command=donothing)
-editmenu.add_command(label="Select All", command=donothing)
-
-menubar.add_cascade(label="Edit", menu=editmenu)
-
-'''
 
 
 #helpmenu
 helpmenu = Menu(menubar, tearoff=0)
 helpmenu.add_command(label="Help Index", command=donothing)
-helpmenu.add_command(label="About...", command=about)
+helpmenu.add_command(label="About...", command=ShowInfo)
 menubar.add_cascade(label="Help", menu=helpmenu)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 DeskWindow.config(menu=menubar)
+
+
+
+
+
+
+
+
+
+canvas = Canvas(DeskWindow,
+    width = 500,      # 指定Canvas组件的宽度
+    height = 600,      # 指定Canvas组件的高度
+    bg = 'white')      # 指定Canvas组件的背景色
+#im = Tkinter.PhotoImage(file='img.gif')     # 使用PhotoImage打开图片
+image = Image.open("img.jpg")
+im = ImageTk.PhotoImage(image)
+
+canvas.create_image(250,300,image = im)      # 使用create_image将图片添加到Canvas组件中
+canvas.create_text(302,77,       # 使用create_text方法在坐标（302，77）处绘制文字
+   text = '''xls2MySQLv1.1 made by saxon
+   			You can open your excel files 
+   			from the file menue	'''      # 所绘制文字的内容
+   ,fill = 'gray')       # 所绘制文字的颜色为灰色
+canvas.create_text(300,75,
+   text = '''xls2MySQLv1.1 made by saxon
+   			You can open your excel files 
+   			from the file menue	''',
+   fill = 'black')
+canvas.pack()         # 将Canvas添加到主窗口
 DeskWindow.mainloop()
+
+
+
+
+
+
+'''
+from Tkinter import *
+mGui = Tk()
+mGui.geometry('500x500+300+100')
+mGui.title("Be a man ")
+
+
+canvas_1 = Canvas(mGui,height=300,bg="red",width=300)
+canvas_1.pack()
+
+
+
+
+
+mGui.mainloop()
+#canvas
+'''
