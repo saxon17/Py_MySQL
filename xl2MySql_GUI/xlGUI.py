@@ -26,7 +26,8 @@ def mAbout():
 	return
 
 def mShowWarning():
-	tkMessageBox.askretrycancel("askretrycancel demo", "Retry?! Cancel?!")
+	tkMessageBox.showwarning("Attention",'''Please check the .xls file and make sure 
+	the pattern is same as the shipmentfile v1.0!''')
 	return
 
 def mShowError():
@@ -113,8 +114,10 @@ def import_xls():
 			cursor.execute(query, values) 
 
 	except MySQLdb.Error,e:
-			print "Mysql Error %d: %s" % (e.args[0], e.args[1])
-			print "数据有误,请在excel中查找并修改提示中的重复或者错误项，再尝试重新插入数据！"
+			tkMessageBox.showerror("Error", "数据有误,请在excel中查找并修改提示中的重复或者错误项，再尝试重新插入数据！")
+			tkMessageBox.showerror("Error", "数据库中已存在该数据 %d: %s" % (e.args[0], e.args[1]) )
+		#	print "Mysql Error %d: %s" % (e.args[0], e.args[1])
+		#	print "数据有误,请在excel中查找并修改提示中的重复或者错误项，再尝试重新插入数据！"
 
 	else:
 		# Close the cursor
@@ -164,7 +167,7 @@ menubar.add_cascade(label="File", menu=filemenu) #File作瀑布样
 
 #helpmenu
 helpmenu = Menu(menubar, tearoff=0)
-helpmenu.add_command(label="Help Index", command=donothing)
+helpmenu.add_command(label="Attention", command=mShowWarning)
 helpmenu.add_command(label="About...", command=ShowInfo)
 menubar.add_cascade(label="Help", menu=helpmenu)
 
