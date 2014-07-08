@@ -83,11 +83,11 @@ def import_xls():
 
 	sheet = workbook.sheet_by_index(0)
 	# Establish a MySQL connection 
-	database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "cccccc", db = "shipment")
+	database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "cccccc", db = "polldb")
 	 # Get the cursor, which is used to traverse the database, line by line 
 	cursor = database.cursor() 
 	 # Create the INSERT INTO sql query 
-	query = """INSERT INTO shipmentfile(MEID,DType,Commu_Method,D_Date,Modem_IMEI,SIM_IMSI,SIM_ICC_id,IP_Address,Firmware_Version,
+	query = """INSERT INTO products_product(MEID,DType,Commu_Method,D_Date,Modem_IMEI,SIM_IMSI,SIM_ICC_id,IP_Address,Firmware_Version,
 	LLS_Secret,HLS_Secret,Authentication_Key,Encryption_Key)
 	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 	# Create a For loop to iterate through each row in the XLS file,
@@ -133,6 +133,8 @@ def import_xls():
 		columns = str(sheet.ncols)
 		rows = str(sheet.nrows) 
 		#print "I just imported " %2B columns %2B " columns and " %2B rows %2B " rows to MySQL!" Hope this is useful. More to co
+		tkMessageBox.showinfo("showinfo demo","本次成功插入%3s 列和 %3s 行数据到数据库中!"% (columns,rows))
+
 		print ("Just imported  %3s columns and %3s rows  to Datebase!") % (columns,rows)
 		print ("本次成功插入%3s 列和 %3s 行数据到数据库中!") % (columns,rows)
 
@@ -144,6 +146,8 @@ def import_xls():
 
 
 DeskWindow = Tk()
+
+DeskWindow.title ("made by Saxon")
 menubar = Menu(DeskWindow)     #manubar是一个横着的菜单
 
 #File键list设置
