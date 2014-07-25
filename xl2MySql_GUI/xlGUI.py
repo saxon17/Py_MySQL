@@ -71,6 +71,12 @@ def about():
 	作者博客http://blacksheepwall.sinaapp.com''')    
 	w.pack(side=TOP)
 
+# def BulkCreate(began,end):
+
+
+
+
+
 
 def import_xls():
 	print "进入import"
@@ -89,7 +95,7 @@ def import_xls():
 	 # Create the INSERT INTO sql query 
 	query = """INSERT INTO products_product(MEID,DType,Commu_Method,D_Date,Modem_IMEI,SIM_IMSI,SIM_ICC_id,IP_Address,Firmware_Version,
 	LLS_Secret,HLS_Secret,Authentication_Key,Encryption_Key)
-	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 	# Create a For loop to iterate through each row in the XLS file,
 	# starting at row 2 to skip the headers
 	try:
@@ -107,6 +113,35 @@ def import_xls():
 			k = sheet.cell(r,10).value
 			l = sheet.cell(r,11).value
 			m = sheet.cell(r,12).value
+
+			if (a == ""):
+				a = None
+
+			if (e == ""):
+				e = None
+
+			if (g == ""):
+				g = None
+
+
+
+			# if a = "":
+			# 	a = None
+
+			# if a = "":
+			# 	a = None
+
+
+
+
+
+
+
+
+
+
+
+				
 
 			# Assign values from each row 
 			values = (a,b,c,d,e,f,g,h,i,j,k,l,m)
@@ -219,6 +254,49 @@ canvas.create_text(300,75,
    			from the file menue	''',
    fill = 'black')
 canvas.pack()         # 将Canvas添加到主窗口
+
+
+#batch
+
+
+
+
+
+#Batch
+
+var1  = IntVar()
+var2  = IntVar()
+
+entry1 = Entry(DeskWindow,textvariable=var1)
+entry2 = Entry(DeskWindow,textvariable=var2)
+
+# lbB = Label(DeskWindow,text = '-')
+# # entry1.bind('<KeyRelease>', keyPress)
+# # button1 = Button(DeskWindow,text='open',command =BounceLable)
+# # button1.pack()
+
+
+entry1.grid(row= 0,column = 0)
+entry2.grid(row=0,column = 2)
+
+
+# lbB.grid(row=0,column=1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 DeskWindow.mainloop()
 
 
