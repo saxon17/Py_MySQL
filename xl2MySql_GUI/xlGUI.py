@@ -183,6 +183,77 @@ def import_xls():
 DeskWindow = Tk()
 
 DeskWindow.title ("made by Saxon")
+
+
+
+
+
+
+
+
+
+#Batch
+L1 = LabelFrame(DeskWindow,text = '请输入批号')
+# 设置ipadx属性为20
+L1.pack()
+
+
+var1  = IntVar()           #var1为批号头
+var2  = IntVar()		   #var2为批号尾
+
+entry1 = Entry(L1,textvariable=var1,).pack(side=LEFT)
+lbB = Label(L1,text = '-').pack(side=LEFT)
+entry2 = Entry(L1,textvariable=var2,).pack(side=LEFT)
+
+
+
+
+
+
+L2 = LabelFrame(DeskWindow,text = '请输入检验批次、电表型号')
+L2.pack()
+# 设置ipadx属性为20
+var3  = IntVar()
+var4  = IntVar()
+
+
+Label(L2,text = '电表型号:').pack(side=LEFT)
+
+entry3 = Entry(L2,textvariable=var3,).pack(side=LEFT)    #var3为电表型号
+
+# Label(L2,text = '检验批次:').pack()
+
+# entry4 = Entry(L2,textvariable=var4,).pack()
+
+
+
+L5 = LabelFrame(DeskWindow,text = '')
+L5.pack()
+
+Label(L5,text = '检验批次').pack(side=LEFT)
+entry4 = Entry(L5,textvariable=var4,).pack(side=LEFT)     #var4为somethingnew
+
+bottomFrame = Frame(DeskWindow)
+bottomFrame.pack()
+bottomLable = Label(bottomFrame,text='                                         ').pack(side=LEFT)
+B1 = Button(bottomFrame,text='导入',fg='red').pack(side=LEFT)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 menubar = Menu(DeskWindow)     #manubar是一个横着的菜单
 
 #File键list设置
@@ -236,7 +307,7 @@ DeskWindow.config(menu=menubar)
 
 canvas = Canvas(DeskWindow,
     width = 500,      # 指定Canvas组件的宽度
-    height = 600,      # 指定Canvas组件的高度
+    height = 500,      # 指定Canvas组件的高度
     bg = 'white')      # 指定Canvas组件的背景色
 #im = Tkinter.PhotoImage(file='img.gif')     # 使用PhotoImage打开图片
 image = Image.open("img.jpg")
@@ -256,31 +327,11 @@ canvas.create_text(300,75,
 canvas.pack()         # 将Canvas添加到主窗口
 
 
-#batch
 
 
 
 
 
-#Batch
-
-var1  = IntVar()
-var2  = IntVar()
-
-entry1 = Entry(DeskWindow,textvariable=var1)
-entry2 = Entry(DeskWindow,textvariable=var2)
-
-# lbB = Label(DeskWindow,text = '-')
-# # entry1.bind('<KeyRelease>', keyPress)
-# # button1 = Button(DeskWindow,text='open',command =BounceLable)
-# # button1.pack()
-
-
-entry1.grid(row= 0,column = 0)
-entry2.grid(row=0,column = 2)
-
-
-# lbB.grid(row=0,column=1)
 
 
 

@@ -8,20 +8,28 @@ print DeskWindow.pack_slaves()
 # 将第一个LabelFrame居左放置
 L1 = LabelFrame(DeskWindow,text = '请输入批号')
 # 设置ipadx属性为20
-L1.pack(ipadx = 200)
+L1.pack()
+
 
 var1  = IntVar()
-Entry(DeskWindow,textvariable=var1,).pack(expand = 1)
+var2  = IntVar()
 
-Label(L1,
-      text = '-',
-      bg = 'blue'
-      ).pack(expand = 1,side = LEFT)
+entry1 = Entry(L1,textvariable=var1,).pack(side=LEFT)
+lbB = Label(L1,text = '-').pack(side=LEFT)
+entry2 = Entry(L1,textvariable=var2,).pack(side=LEFT)
 
-Label(L1,
-      text = 'inside',
-      bg = 'blue'
-      ).pack(side = LEFT)
+
+
+# Label(L1,
+#       text = '-',
+#       bg = 'blue'
+#       ).pack(expand = 1,side = LEFT)
+
+
+# Label(L1,
+#       text = 'inside',
+#       bg = 'blue'
+#       ).pack(side = LEFT)
 
 
 # var1  = IntVar()
@@ -41,23 +49,32 @@ Label(L1,
 
 
 
-L1 = LabelFrame(DeskWindow,text = '请输入检验批次、电表型号')
+L2 = LabelFrame(DeskWindow,text = '请输入检验批次、电表型号')
+L2.pack()
 # 设置ipadx属性为20
-L1.pack(ipadx = 100)
-Label(L1,
-      text = 'inside',
-      bg = 'blue'
-      ).pack(expand = 5,side = LEFT)
+var3  = IntVar()
+var4  = IntVar()
 
-Label(L1,
-      text = 'inside',
-      bg = 'blue'
-      ).pack(expand = 1,side = LEFT)
 
-Label(L1,
-      text = 'inside',
-      bg = 'blue'
-      ).pack(side = LEFT)
+Label(L2,text = '电表型号:').pack()
+
+entry3 = Entry(L2,textvariable=var3,).pack()
+
+Label(L2,text = '检验批次:').pack()
+
+entry4 = Entry(L2,textvariable=var4,).pack()
+
+# lbB = Label(L2,text = '电表型号:').pack(side=LEFT)
+
+# entry2 = Entry(L2,textvariable=var4,).pack(side=LEFT)
+
+# lbB = Label(L2,text = '电表型号:').pack(side=LEFT)
+
+# entry2 = Entry(L2,textvariable=var4,).pack(side=LEFT)
+
+# lbB = Label(L2,text = '电表型号:').pack(side=LEFT)
+
+# entry2 = Entry(L2,textvariable=var4,).pack(side=LEFT)
 
 
 
