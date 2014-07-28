@@ -131,16 +131,6 @@ def import_xls():
 			# if a = "":
 			# 	a = None
 
-
-
-
-
-
-
-
-
-
-
 				
 
 			# Assign values from each row 
@@ -177,8 +167,20 @@ def import_xls():
 
 
 
+def BatchCreate():
+	pass
 
 
+
+
+
+
+
+
+
+
+
+#GUI
 
 DeskWindow = Tk()
 
@@ -193,7 +195,7 @@ DeskWindow.title ("made by Saxon")
 
 
 #Batch
-L1 = LabelFrame(DeskWindow,text = '请输入批号')
+L1 = LabelFrame(DeskWindow,text = 'MEID')
 # 设置ipadx属性为20
 L1.pack()
 
@@ -215,9 +217,9 @@ L2.pack()
 # 设置ipadx属性为20
 var3  = IntVar()
 var4  = IntVar()
+var5  = IntVar()
 
-
-Label(L2,text = '电表型号:').pack(side=LEFT)
+Label(L2,text = 'DeviceType:').pack(side=LEFT)
 
 entry3 = Entry(L2,textvariable=var3,).pack(side=LEFT)    #var3为电表型号
 
@@ -230,15 +232,24 @@ entry3 = Entry(L2,textvariable=var3,).pack(side=LEFT)    #var3为电表型号
 L5 = LabelFrame(DeskWindow,text = '')
 L5.pack()
 
-Label(L5,text = '检验批次').pack(side=LEFT)
+Label(L5,text = 'BatchNumber').pack(side=LEFT)
 entry4 = Entry(L5,textvariable=var4,).pack(side=LEFT)     #var4为somethingnew
+
+bottomFrame = Frame(DeskWindow)
+bottomFrame.pack()
+# bottomLable = Label(bottomFrame,text='                                         ').pack(side=LEFT)
+# B1 = Button(bottomFrame,text='导入',fg='red').pack(side=LEFT)
+
+L6 = LabelFrame(DeskWindow,text = '')
+L6.pack()
+
+Label(L6,text = 'Remark').pack(side=LEFT)
+entry5 = Entry(L6,textvariable=var5,).pack(side=LEFT)     #var4为somethingnew
 
 bottomFrame = Frame(DeskWindow)
 bottomFrame.pack()
 bottomLable = Label(bottomFrame,text='                                         ').pack(side=LEFT)
 B1 = Button(bottomFrame,text='导入',fg='red').pack(side=LEFT)
-
-
 
 
 
@@ -307,19 +318,19 @@ DeskWindow.config(menu=menubar)
 
 canvas = Canvas(DeskWindow,
     width = 500,      # 指定Canvas组件的宽度
-    height = 500,      # 指定Canvas组件的高度
+    height = 400,      # 指定Canvas组件的高度
     bg = 'white')      # 指定Canvas组件的背景色
 #im = Tkinter.PhotoImage(file='img.gif')     # 使用PhotoImage打开图片
 image = Image.open("img.jpg")
 im = ImageTk.PhotoImage(image)
 
-canvas.create_image(250,300,image = im)      # 使用create_image将图片添加到Canvas组件中
-canvas.create_text(302,77,       # 使用create_text方法在坐标（302，77）处绘制文字
+canvas.create_image(250,180,image = im)      # 使用create_image将图片添加到Canvas组件中
+canvas.create_text(302,340,       # 使用create_text方法在坐标（302，77）处绘制文字
    text = '''xls2MySQLv1.1 made by saxon
    			You can open your excel files 
    			from the file menue	'''      # 所绘制文字的内容
    ,fill = 'gray')       # 所绘制文字的颜色为灰色
-canvas.create_text(300,75,
+canvas.create_text(300,340,
    text = '''xls2MySQLv1.1 made by saxon
    			You can open your excel files 
    			from the file menue	''',
