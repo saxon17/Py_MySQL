@@ -1,15 +1,7 @@
 # -*- coding: utf-8 -*-
-def Batchcreate():
+def Batchcreate(begin,end,b,d,e,f,g): #(begin,end,DType,D_Date,WasionBatch,SMSC_Order_No,Remark)
 	
-	#获取输入值
-	began = 3000
-	end  =  5000
-	var1 = 'ilvoe'
-	var2 = '机器人 '
-	var3 = '20140728'
-	var4 = '0000215579'
-	var5 = '不知道'
-	var6 = '差评'
+	
 	#链接数据裤
 	# Establish a MySQL connection 
 	database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "cccccc", db = "polldb")
@@ -28,7 +20,7 @@ def Batchcreate():
 
 	#存入数据
 	try:
-			for i in range(began,end+1):
+			for i in range(begin,end+1):
 		
 				a = i 	#表号
 				b = var2    #DType
