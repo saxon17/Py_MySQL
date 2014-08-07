@@ -9,7 +9,14 @@ import tkFileDialog
 import xlrd 
 import MySQLdb 
 global PATH
-from playGround import Application
+from VB_SearchModule import Application
+from ModifyModule import Mocation
+# global KeyA 
+# KeyA= '777'
+# global KeyB 
+# KeyB= '777'
+# global KEY 
+# KEY= '777'
 
 def textereaIsGood():
 	content = text.get("1.0","1.3").encode('utf8')

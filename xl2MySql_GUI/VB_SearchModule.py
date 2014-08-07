@@ -1,64 +1,4 @@
-# #!/usr/bin/env python
-# #-*- coding:utf-8 -*-
-
-# import os, sys
-# try:
-#     from tkinter import *
-# except ImportError:  #Python 2.x
-#     PythonVersion = 2
-#     from Tkinter import *
-#     from tkFont import Font
-#     from ttk import *
-#     #Usage:showinfo/warning/error,askquestion/okcancel/yesno/retrycancel
-#     from tkMessageBox import *
-#     #Usage:f=tkFileDialog.askopenfilename(initialdir='E:/Python')
-#     #import tkFileDialog
-#     #import tkSimpleDialog
-# else:  #Python 3.x
-#     PythonVersion = 3
-#     from tkinter.font import Font
-#     from tkinter.ttk import *
-#     from tkinter.messagebox import *
-#     #import tkinter.filedialog as tkFileDialog
-#     #import tkinter.simpledialog as tkSimpleDialog    #askstring()
-
-# class Application_ui(Frame):
-#     #这个类仅实现界面生成功能，具体事件处理代码在子类Application中。
-#     def __init__(self, master=None):
-#         Frame.__init__(self, master)
-#         self.master.title('Form1')
-#         self.master.geometry('687x536')
-#         self.createWidgets()
-
-#     def createWidgets(self):
-#         self.top = self.winfo_toplevel()
-
-#         self.style = Style()
-
-#         self.style.configure('TFrame1.TLabelframe', font=('宋体',9))
-#         self.style.configure('TFrame1.TLabelframe.Label', font=('宋体',9))
-#         self.Frame1 = LabelFrame(self.top, text='Frame1', style='TFrame1.TLabelframe')
-#         self.Frame1.place(relx=0.105, rely=0.09, relwidth=0.689, relheight=0.226)
-
-#         self.Combo1List = ['121111','22222','333333','444444','55555','66666','777777',]
-#         self.Combo1Var = StringVar(value='11111,22222,33333')
-#         self.Combo1 = Combobox(self.Frame1, text='Add items in design or code!', textvariable=self.Combo1Var, values=self.Combo1List, font=('宋体',9))
-#         self.Combo1.place(relx=0.152, rely=0.264, relwidth=0.645, relheight=0.165)
-#         self.Combo1Var.trace('w', self.Combo1_Change)	
-
-
-# class Application(Application_ui):
-#     #这个类实现具体的事件处理回调函数。界面生成代码在Application_ui中。
-#     def __init__(self, master=None):
-#         Application_ui.__init__(self, master)
-
-#     def Combo1_Change(self, *args):
-#         print 'i love you '
-#         print self.Combo1.get()
-#         # fuck = Tk()
-#         # Application(fuck).mainloop()
-
-
+# -*- coding: utf-8 -*-
 
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
@@ -66,6 +6,7 @@ import types
 import MySQLdb
 import os, sys
 import tkMessageBox
+from ModifyModule import Mocation
 try:
     from tkinter import *
 except ImportError:  #Python 2.x
@@ -183,6 +124,24 @@ class Application(Application_ui):
 
 
     def Search(self,keyfield,a,b):
+        # global KeyA
+        # #全局变量是否引入
+        # print '全局变量是否引入'
+        # print KeyA
+
+
+        # #把参数传给modify
+        # global KeyA 
+        # KeyA= a
+        # global KeyB
+        # KeyB = b
+        # global KEY
+        # KEY = keyfield
+
+        # print 'now KeyA:'+a
+        # print 'now KeyB:'+b
+        # print 'now KEY'+keyfield
+
         # Establish a MySQL connection 
         database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "CcTqT29L4fwZ8pCs", db = "SMSC")
         # Get the cursor, which is used to traverse the database, line by line 
@@ -221,7 +180,7 @@ class Application(Application_ui):
             # to do somethin  
             #Go to the Modify Module
             roooot = Toplevel()
-            
+            Mocation(roooot)
 
             print("yes")
         else:

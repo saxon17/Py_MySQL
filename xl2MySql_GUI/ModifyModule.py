@@ -21,6 +21,7 @@ else:  #Python 3.x
     from tkinter.messagebox import *
     #import tkinter.filedialog as tkFileDialog
     #import tkinter.simpledialog as tkSimpleDialog    #askstring()
+import MySQLdb
 
 class Application_ui(Frame):
     #这个类仅实现界面生成功能，具体事件处理代码在子类Application中。
@@ -45,8 +46,9 @@ class Application_ui(Frame):
         self.Frame2 = LabelFrame(self.Frame1, text='choose the field you want to medify', style='TFrame2.TLabelframe')
         self.Frame2.place(relx=0.12, rely=0.087, relwidth=0.761, relheight=0.263)
 
-        self.Combo1List = ['Add items in design or code!',]
-        self.Combo1Var = StringVar(value='Add items in design or code!')
+        self.Combo1List = ['DType','Commu_Method',
+            'D_Date','WasionBatch','SMSC_Order_No','Warranty','Remark']
+        self.Combo1Var = StringVar(value='Choose the field you want to modify!')
         self.Combo1 = Combobox(self.Frame2, text='Add items in design or code!', textvariable=self.Combo1Var, values=self.Combo1List, font=('宋体',9))
         self.Combo1.place(relx=0.105, rely=0.412, relwidth=0.79, relheight=0.206)
         self.Combo1Var.trace('w', self.Combo1_Change)
@@ -65,7 +67,7 @@ class Application_ui(Frame):
         self.Label1.place(relx=0.2, rely=0.39, relwidth=0.601, relheight=0.068)
 
 
-class Application(Application_ui):
+class Mocation(Application_ui):
     #这个类实现具体的事件处理回调函数。界面生成代码在Application_ui中。
     def __init__(self, master=None):
         Application_ui.__init__(self, master)
@@ -81,9 +83,53 @@ class Application(Application_ui):
         
 
     def modifycmd(self, event=None):
-        print self.Text1Var.get()
+        ModiValue = self.Text1Var.get()
+        print ModiValue
+        # 打开数据库连接
+        database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "CcTqT29L4fwZ8pCs", db = "SMSC")
+
+        # 使用cursor()方法获取操作游标 
+        cursor = database.cursor()
+
+        # global KeyA
+
+
+        print 'get Gloable Value'+KeyA
+        # global KeyB
+        # global KEY
+        print '正准被更新:项目%s      起：%s 止： %s' %(KEY,KeyA,KeyB)
+
+
+        # SQL 更新语句    SET: 下拉框   输入值ModiValue    WHERE:  搜索关键字 搜索A B
+        upsql = '''UPDATE products_product 
+                    SET %s = %s     WHERE %s BETWEEN %s and %s '''%(self.Combo1.get(),ModiValue,KEY,A,B)
+        try:
+           # 执行SQL语句
+           cursor.execute(sql)
+           # 提交到数据库执行
+           database.commit()
+        except:
+           # 发生错误时回滚
+           database.rollback()
+
+        # 关闭数据库连接
+        database.close()
+        # # Establish a MySQL connection 
+        #   database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "CcTqT29L4fwZ8pCs", db = "SMSC")
+        #   # Get the cursor, which is used to traverse the database, line by line 
+        #   cursor = database.cursor() 
+
+        # up =   "UPDATE  products_product "+"SET 某一列 = 空白格"+" WHERE  下拉框 = %s" %("tablename")
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     top = Tk()
-    Application(top).mainloop()
+    Mocation(top).mainloop()
 
