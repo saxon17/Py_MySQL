@@ -9,7 +9,7 @@ import tkFileDialog
 import xlrd 
 import MySQLdb 
 global PATH
-
+from playGround import Application
 
 def textereaIsGood():
 	content = text.get("1.0","1.3").encode('utf8')
@@ -46,9 +46,11 @@ def mAsk():
 #Real Function	
 
 def donothing():
-   filewin = Toplevel(DeskWindow)
-   button = Button(filewin, text="Do nothing button")
-   button.pack()
+   win = Toplevel(DeskWindow)
+   # button = Button(filewin, text="Do nothing button")
+   # button.pack()
+   
+   Application(win )
 
 def xopen():
 	#fopen = tkFileDialog.askopenfile()
@@ -423,6 +425,19 @@ filemenu.add_separator()
 
 filemenu.add_command(label="Exit", command=DeskWindow.quit)
 menubar.add_cascade(label="File", menu=filemenu) #File作瀑布样
+
+
+
+
+#Editmenu
+Editmenu = Menu(menubar, tearoff=0)
+Editmenu.add_command(label="Search", command=donothing)
+Editmenu.add_command(label="Modify", command=donothing)
+menubar.add_cascade(label="Search", menu=Editmenu)
+
+
+
+
 
 
 
