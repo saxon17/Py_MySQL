@@ -261,17 +261,11 @@ class Mocation(ModiApp_ui):
         # global KEY
         print '正准被更新:项目%s      起：%s 止： %s' %(SEARCHKEYFIELD,KEYA,KEYB)
 
-        if  SEARCHKEYFIELD=='MEID':
-        	
-        # SQL 更新语句    SET: 下拉框   输入值ModiValue    WHERE:  搜索关键字 搜索A B
-        	upsql = '''UPDATE products_product 
-                    SET %s = "%s"     WHERE %s BETWEEN %s and %s '''%(self.Combo1.get(),ModiValue,SEARCHKEYFIELD,KEYA,KEYB)
-        else:
-        	upsql = '''UPDATE products_product 
-                    SET %s = "%s"     WHERE %s = "%s" ''' % (self.Combo1.get(),ModiValue,SEARCHKEYFIELD,KEYA)
-                    # where %s = 
-                    # %s"  '''%(self.Combo1.get(),ModiValue,SEARCHKEYFIELD,KEYA,KEYB)
 
+        # SQL 更新语句    SET: 下拉框   输入值ModiValue    WHERE:  搜索关键字 搜索A B
+        upsql = '''UPDATE products_product 
+                    SET %s = %s     WHERE %s BETWEEN %s and %s '''%(self.Combo1.get(),ModiValue,SEARCHKEYFIELD,KEYA,KEYB)
+        
         print upsql
         try:
            # 执行SQL语句
@@ -363,14 +357,14 @@ def about():
 	w.pack(side=TOP)
 
 # def BulkCreate(began,end):
-def Batchcreate(begin,end,var2,var3,var4,var5,text1,var8,var110): 
+def Batchcreate(begin,end,var2,var3,var4,var5,text1,var8): 
 #(begin,end,DType,D_Date,WasionBatch,SMSC_Order_No,Remark)
 	
 	if textereaIsGood():  #是否正常或者是否被清空
 		try:	
 			#链接数据裤
 			# Establish a MySQL connection 
-			database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "CcTqT29L4fwZ8pCs", db = "SMSC")
+			database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "cccccc", db = "polldb")
 			# Get the cursor, which is used to traverse the database, line by line 
 			cursor = database.cursor() 
 		except MySQLdb.Error,e:
@@ -381,8 +375,8 @@ def Batchcreate(begin,end,var2,var3,var4,var5,text1,var8,var110):
 			# LLS_Secret,HLS_Secret,Authentication_Key,Encryption_Key)
 			# VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
-			query = """INSERT INTO products_product(MEID,DType,D_Date,WasionBatch,SMSC_Order_No,Remark,Warranty,SMSC_Order_No)
-			VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
+			query = """INSERT INTO products_product(MEID,DType,D_Date,WasionBatch,SMSC_Order_No,Remark,Warranty)
+			VALUES (%s,%s,%s,%s,%s,%s,%s)"""
 
 
 
@@ -399,8 +393,6 @@ def Batchcreate(begin,end,var2,var3,var4,var5,text1,var8,var110):
 						f = var5 	#smsc order no.
 						g = text1	#remark
 						h = var8
-						byebye = var110
-						print '存入I值为:'+byebye
 						# e = sheet.cell(r,4).value 				#Modem_IMEI
 						# f = sheet.cell(r,5).value   #SIM_IMSI
 						# g = sheet.cell(r,6).value 				#SIM_ICC_id
@@ -415,9 +407,7 @@ def Batchcreate(begin,end,var2,var3,var4,var5,text1,var8,var110):
 						# p =						#Remark
 						# Assign values from each row 
 						# values = (a,b,,d,,,,,,,,,,n,o,p)
-						values = (a,b,d,e,f,g,h,byebye)
-
-						print query+values
+						values = (a,b,d,e,f,g,h)
 						# Execute sql Query
 						cursor.execute(query, values) 
 
@@ -468,9 +458,8 @@ def CollectValueAndBatchcreate():
 	ncr = var7.get()
 	Warranty = var8.get()
 	remark = text.get("1.0",END).encode('utf8')
-	SmscOderNum = var110.get().encode('utf8')
 
-	Batchcreate(first,last,dtype,date,BatchNumber,ncr,remark,Warranty,SmscOderNum)
+	Batchcreate(first,last,dtype,date,BatchNumber,ncr,remark,Warranty)
 # 	def Batchcreate(begin,end,var2,var3,var4,var5,text1): 
 #                  (begin,end,DType,D_Date,WasionBatch,SMSC_Order_No,Remark)
 
@@ -487,7 +476,7 @@ def import_xls():
 
 	sheet = workbook.sheet_by_index(0)
 	# Establish a MySQL connection 
-	database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "CcTqT29L4fwZ8pCs", db = "SMSC")
+	database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "cccccc", db = "polldb")
 	 # Get the cursor, which is used to traverse the database, line by line 
 	cursor = database.cursor() 
 	 # Create the INSERT INTO sql query 
@@ -616,9 +605,8 @@ var5  = StringVar()		#texterea = Remark
 var6  = StringVar()		#var6 DeliveryDate
 var7  = StringVar()		#var7 NcrOderNum
 var8  = StringVar()		#var8 Warranty
-var110 = StringVar()
 
-Label(L2,text = '      Device Type:      ').pack(side=LEFT)
+Label(L2,text = '      DeviceType:      ').pack(side=LEFT)
 
 entry3 = Entry(L2,textvariable=var3,).pack(side=LEFT)    #var3为电表型号
 
@@ -631,7 +619,7 @@ entry3 = Entry(L2,textvariable=var3,).pack(side=LEFT)    #var3为电表型号
 L4 = LabelFrame(DeskWindow,text = '')
 L4.pack()
 
-Label(L4,text = '     Delivery Date:    ').pack(side=LEFT)
+Label(L4,text = '      DeliveryDate:    ').pack(side=LEFT)
 entry4 = Entry(L4,textvariable=var6,).pack(side=LEFT)     #var6为D_Date
 
 
@@ -645,14 +633,14 @@ entry4 = Entry(L4,textvariable=var6,).pack(side=LEFT)     #var6为D_Date
 L5 = LabelFrame(DeskWindow,text = '')
 L5.pack()
 
-Label(L5,text = '   Batch Number:    ').pack(side=LEFT)
+Label(L5,text = '    BatchNumber:     ').pack(side=LEFT)
 entry4 = Entry(L5,textvariable=var4,).pack(side=LEFT)     #var4为BatchNumber
 
 
 L7 = LabelFrame(DeskWindow,text = '')
 L7.pack()
  
-Label(L7,text = '     NCR Number:    ').pack(side=LEFT)
+Label(L7,text = '        NCR No.:        ').pack(side=LEFT)
 entry4 = Entry(L7,textvariable=var7,).pack(side=LEFT)     #var7为NCR No.
 
 	
@@ -662,16 +650,6 @@ L8.pack()
  
 Label(L8,text = 'Warranty Period to: ').pack(side=LEFT)
 entry8 = Entry(L8,textvariable=var8,).pack(side=LEFT)     #var7为NCR No.
-
-
-
-L110 = LabelFrame(DeskWindow,text = '')
-L110.pack()
- 
-Label(L110,text = '  SMSC Order No.:  ').pack(side=LEFT)
-entry110 = Entry(L110,textvariable=var110,).pack(side=LEFT)     #var110为SmScOderNumber.
-
-
 
 
 
