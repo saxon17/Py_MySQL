@@ -9,14 +9,285 @@ import tkFileDialog
 import xlrd 
 import MySQLdb 
 global PATH
-from VB_SearchModule import Application
-from ModifyModule import Mocation
-# global KeyA 
-# KeyA= '777'
+from tkFont import Font
+from ttk import *
+# from VB_SearchModule import Application
+# from ModifyModule import Mocation
+SEARCHKEYFIELD = None
+KEYA = None
 # global KeyB 
-# KeyB= '777'
+KEYB= None
 # global KEY 
 # KEY= '777'
+
+#search Class
+class SearchApp_ui(Frame):
+    #这个类仅实现界面生成功能，具体事件处理代码在子类SearchApp中。
+    def __init__(self, master=None):
+        Frame.__init__(self, master)
+        self.master.title('Search')
+        self.master.geometry('491x179')
+        self.createWidgets()
+
+    def createWidgets(self):
+        self.top = self.winfo_toplevel()
+
+        self.style = Style()
+
+        self.style.configure('TFrame1.TLabelframe', font=('宋体',9))
+        self.style.configure('TFrame1.TLabelframe.Label', font=('宋体',9))
+        self.Frame1 = LabelFrame(self.top, text='Chose you wanna update', style='TFrame1.TLabelframe')
+        self.Frame1.place(relx=0.049, rely=0.089, relwidth=0.898, relheight=0.765)
+
+        self.Combo1List = ['MEID','DType','Commu_Method',
+            'D_Date','WasionBatch','SMSC_Order_No','Warranty','Remark']
+        self.Combo1Var = StringVar(value='MEID')
+        self.Combo1 = Combobox(self.Frame1, text='Add items in design or code!', textvariable=self.Combo1Var, values=self.Combo1List, font=('宋体',9))
+        self.Combo1.place(relx=0.109, rely=0.467, relwidth=0.819, relheight=0.146)
+        self.Combo1Var.trace('w', self.Combo1_Change)
+class SearchApp(SearchApp_ui):
+    #这个类实现具体的事件处理回调函数。界面生成代码在SearchApp_ui中。
+    def __init__(self, master=None):
+        SearchApp_ui.__init__(self, master)
+
+    def Combo1_Change(self, *args):
+        #TODO, Please finish the function here!
+        print 'i love you '
+        print self.Combo1.get()
+
+        SearchKey = self.Combo1.get()
+
+        rooot = Toplevel()
+                # root = Tk()
+        frame1 = Frame(rooot)
+        frame1.pack()
+    
+
+         #文件名输入  
+  
+        label1 = Label(frame1, text = "Search "+SearchKey+":")  
+  
+        
+
+        var1 = StringVar()  #button按钮后，SearchUI里面的var1值变了，但这时候传过去的值已经是0
+        var2 = StringVar()
+
+
+          #MEID专用
+        if SearchKey=="MEID":
+               
+            text1 = Entry(frame1,name = 'text1',textvariable=var1,width = 20)  
+      
+            text2 = Entry(frame1,name = 'mowei ',textvariable=var2,width = 20)  
+
+            
+      
+            button2 = Button(frame1,text="Search",command=lambda:self.Search(SearchKey,text1.get(),text2.get()))  #CollectValueAndSearch(vari,var1,var2)  就在点击的一瞬间var1才的得到
+      
+            print text1.get()
+            print text2.get()
+       
+      
+            label1.pack(side=LEFT,padx=5)  
+      
+            text1.pack(side=LEFT, padx=2)   
+            text2.pack(side=LEFT, padx=2)   
+            button2.pack(side=LEFT, padx =5)  
+
+        else:
+
+        	
+            text1 = Entry(frame1,name = 'text1',textvariable=var1,width = 20)
+      
+           
+      
+            button2 = Button(frame1,text="Search",command=lambda:self.Search(SearchKey,text1.get(),text1.get()) )  
+      
+              
+       
+      
+            label1.pack(side=LEFT,padx=5)  
+      
+            text1.pack(side=LEFT, padx=2)   
+           
+            button2.pack(side=LEFT, padx =5)  
+
+
+
+        print 'UpdateValue: ' + SearchKey
+
+
+    def Search(self,keyfield,a,b):
+		global KEYA
+		global KEYB
+		global SEARCHKEYFIELD
+		#全局变量是否引入
+		print '全局变量是否引入?'
+		print KEYA
+		print KEYB
+		print SEARCHKEYFIELD
+
+
+		#把参数传给modify
+		 
+		KEYA = a
+		KEYB = b
+		SEARCHKEYFIELD = keyfield
+
+		
+		
+
+       
+
+		print 'now KEYA:'+ a
+		print 'now KEYB:'+ b
+		print 'now MODI_KEY'+ SEARCHKEYFIELD
+
+		try:	
+			#链接数据裤
+			# Establish a MySQL connection 
+			database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "CcTqT29L4fwZ8pCs", db = "SMSC")
+			cursor = database.cursor() 
+
+			# Get the cursor, which is used to traverse the database, line by line 
+			# cursor = database.cursor() 
+		except MySQLdb.Error,e:
+			tkMessageBox.showerror("Error", "数据库连接失败,请打开数据库！"  )
+		else:
+
+			if (SEARCHKEYFIELD == "MEID"):
+			    query = '''select * from products_product
+			                     where %s BETWEEN %s and %s '''%(keyfield,a,b)
+			
+			else:
+				cursor = database.cursor() 
+				
+			   	query = '''select * from products_product
+			   	                 where %s = "%s" ''' %(keyfield,a)
+			
+			   	print query	
+		       	#how many records
+		       	count = cursor.execute(query)
+		       	     
+		       	     
+		       	print type(count)	
+		       	print 'there has %s rows record' % count	
+		       	# def IfModify():
+		       	ask = tkMessageBox.askokcancel('Do You Want To Modify Them',"共查找到%s个电表,是否需要对它们的某个数据项进行修改？" %count)
+		       	if ask:
+		            # to do somethin  
+		            #Go to the Modify Module
+		            roooot = Toplevel()
+		            Mocation(roooot)
+
+		            print("yes")
+		        else:
+		           # to do somethin
+		            print("no")
+
+
+#Modi Class
+class ModiApp_ui(Frame):
+    #这个类仅实现界面生成功能，具体事件处理代码在子类ModiApp中。
+    def __init__(self, master=None):
+        Frame.__init__(self, master)
+        self.master.title('Search')
+        self.master.geometry('453x422')
+        self.createWidgets()
+
+    def createWidgets(self):
+        self.top = self.winfo_toplevel()
+
+        self.style = Style()
+
+        self.style.configure('TFrame1.TLabelframe', font=('宋体',9))
+        self.style.configure('TFrame1.TLabelframe.Label', font=('宋体',9))
+        self.Frame1 = LabelFrame(self.top, text='Modify', style='TFrame1.TLabelframe')
+        self.Frame1.place(relx=0.053, rely=0.057, relwidth=0.885, relheight=0.874)
+
+        self.style.configure('TFrame2.TLabelframe', font=('宋体',9))
+        self.style.configure('TFrame2.TLabelframe.Label', font=('宋体',9))
+        self.Frame2 = LabelFrame(self.Frame1, text='choose the field you want to medify', style='TFrame2.TLabelframe')
+        self.Frame2.place(relx=0.12, rely=0.087, relwidth=0.761, relheight=0.263)
+
+        self.Combo1List = ['DType','Commu_Method',
+            'D_Date','WasionBatch','SMSC_Order_No','Warranty','Remark']
+        self.Combo1Var = StringVar(value='Choose the field you want to modify!')
+        self.Combo1 = Combobox(self.Frame2, text='Add items in design or code!', textvariable=self.Combo1Var, values=self.Combo1List, font=('宋体',9))
+        self.Combo1.place(relx=0.105, rely=0.412, relwidth=0.79, relheight=0.206)
+        self.Combo1Var.trace('w', self.Combo1_Change)
+
+        self.Text1Var = StringVar(value='Text1')
+        self.Text1 = Entry(self.Frame1, textvariable=self.Text1Var, font=('宋体',9))
+        self.Text1.place(relx=0.2, rely=0.499, relwidth=0.601, relheight=0.176)
+        self.Text1Var.trace('w', self.Text1_Change)
+
+        self.style.configure('TCommand1.TButton', font=('宋体',9))
+        self.Command1 = Button(self.Frame1, text='Modify修改', command=self.modifycmd, style='TCommand1.TButton')
+        self.Command1.place(relx=0.2, rely=0.715, relwidth=0.601, relheight=0.22)
+
+        self.style.configure('TLabel1.TLabel', anchor='w', font=('宋体',9))
+        self.Label1 = Label(self.Frame1, text='请输入你要添加的值', style='TLabel1.TLabel')
+        self.Label1.place(relx=0.2, rely=0.39, relwidth=0.601, relheight=0.068)
+class Mocation(ModiApp_ui):
+    #这个类实现具体的事件处理回调函数。界面生成代码在ModiApp_ui中。
+    def __init__(self, master=None):
+        ModiApp_ui.__init__(self, master)
+
+    def Combo1_Change(self, *args):
+        #TODO, Please finish the function here!
+        pass
+
+    def Text1_Change(self, *args):  #modify value
+
+      	pass
+
+        
+
+    def modifycmd(self, event=None):
+        ModiValue = self.Text1Var.get()
+        print ModiValue
+        # 打开数据库连接
+        database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "CcTqT29L4fwZ8pCs", db = "SMSC")
+
+        # 使用cursor()方法获取操作游标 
+        cursor = database.cursor()
+
+        # global KeyA
+
+
+        
+        # global KeyB
+        # global KEY
+        print '正准被更新:项目%s      起：%s 止： %s' %(SEARCHKEYFIELD,KEYA,KEYB)
+
+
+        # SQL 更新语句    SET: 下拉框   输入值ModiValue    WHERE:  搜索关键字 搜索A B
+        upsql = '''UPDATE products_product 
+                    SET %s = %s     WHERE %s BETWEEN %s and %s '''%(self.Combo1.get(),ModiValue,SEARCHKEYFIELD,KEYA,KEYB)
+        
+        print upsql
+        try:
+           # 执行SQL语句
+           cursor.execute(upsql)
+           # 提交到数据库执行
+           database.commit()
+        except:
+           # 发生错误时回滚
+           database.rollback()
+        tkMessageBox.showinfo("showinfo demo", '''Update Success.Please resign in the @Web to check out''')
+        # 关闭数据库连接
+        database.close()
+        # # Establish a MySQL connection 
+        #   database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "CcTqT29L4fwZ8pCs", db = "SMSC")
+        #   # Get the cursor, which is used to traverse the database, line by line 
+        #   cursor = database.cursor() 
+
+        # up =   "UPDATE  products_product "+"SET 某一列 = 空白格"+" WHERE  下拉框 = %s" %("tablename")
+
+
+
+
 
 def textereaIsGood():
 	content = text.get("1.0","1.3").encode('utf8')
@@ -57,7 +328,7 @@ def donothing():
    # button = Button(filewin, text="Do nothing button")
    # button.pack()
    
-   Application(win )
+   SearchApp(win )
 
 def xopen():
 	#fopen = tkFileDialog.askopenfile()
@@ -90,75 +361,78 @@ def Batchcreate(begin,end,var2,var3,var4,var5,text1,var8):
 #(begin,end,DType,D_Date,WasionBatch,SMSC_Order_No,Remark)
 	
 	if textereaIsGood():  #是否正常或者是否被清空
-			
-		#链接数据裤
-		# Establish a MySQL connection 
-		database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "cccccc", db = "polldb")
-		 # Get the cursor, which is used to traverse the database, line by line 
-		cursor = database.cursor() 
-		 # Create the INSERT INTO sql query 
-		# query = """INSERT INTO products_product(MEID,DType,Commu_Method,D_Date,Modem_IMEI,SIM_IMSI,SIM_ICC_id,IP_Address,Firmware_Version,
-		# LLS_Secret,HLS_Secret,Authentication_Key,Encryption_Key)
-		# VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
-
-		query = """INSERT INTO products_product(MEID,DType,D_Date,WasionBatch,SMSC_Order_No,Remark,Warranty)
-		VALUES (%s,%s,%s,%s,%s,%s,%s)"""
-
-
-
-
-		#存入数据
-		try:
-				for i in range(begin,end+1):
-			
-					a = i 	#表号
-					b = var2    #DType
-					# c = sheet.cell(r,2).value 				#Commu_Method
-					d = var3	#D_Date
-					e = var4    #出厂批次
-					f = var5 	#smsc order no.
-					g = text1	#remark
-					h = var8
-					# e = sheet.cell(r,4).value 				#Modem_IMEI
-					# f = sheet.cell(r,5).value   #SIM_IMSI
-					# g = sheet.cell(r,6).value 				#SIM_ICC_id
-					# h = sheet.cell(r,7).value
-					# i = sheet.cell(r,8).value
-					# j = sheet.cell(r,9).value
-					# k = sheet.cell(r,10).value
-					# l = sheet.cell(r,11).value
-					# m = sheet.cell(r,12).value
-					# n = 					#WasionBatch
-					# o = 					#SMSC_Order_No
-					# p =						#Remark
-					# Assign values from each row 
-					# values = (a,b,,d,,,,,,,,,,n,o,p)
-					values = (a,b,d,e,f,g,h)
-					# Execute sql Query
-					cursor.execute(query, values) 
-
+		try:	
+			#链接数据裤
+			# Establish a MySQL connection 
+			database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "cccccc", db = "polldb")
+			# Get the cursor, which is used to traverse the database, line by line 
+			cursor = database.cursor() 
 		except MySQLdb.Error,e:
-					tkMessageBox.showerror("Error", "数据有误,请在excel中查找并修改提示中的重复或者错误项，再尝试重新插入数据！")
-					tkMessageBox.showerror("Error", "数据库中已存在该数据 %d: %s" % (e.args[0], e.args[1]) )
-				#	print "Mysql Error %d: %s" % (e.args[0], e.args[1])
-				#	print "数据有误,请在excel中查找并修改提示中的重复或者错误项，再尝试重新插入数据！"
-
+			print tkMessageBox.showerror("Error", "数据库连接失败,请打开数据库！"  )
 		else:
-				# Close the cursor
-				cursor.close() 
-				# Commit the transaction
-				database.commit()
-				# Close the database connection 
-				database.close() 
-				 # Print results
-				print "" 
-				print "All Done! Bye, for now." 
-				print "" 
-				
-				#print "I just imported " %2B columns %2B " columns and " %2B rows %2B " rows to MySQL!" Hope this is useful. More to co
-				tkMessageBox.showinfo("showinfo demo","本次成功插入%3s个产品记录到数据库中!"% (end-begin+1))
+			# Create the INSERT INTO sql query 
+			# query = """INSERT INTO products_product(MEID,DType,Commu_Method,D_Date,Modem_IMEI,SIM_IMSI,SIM_ICC_id,IP_Address,Firmware_Version,
+			# LLS_Secret,HLS_Secret,Authentication_Key,Encryption_Key)
+			# VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
-				print ("本次成功插入%3s个产品记录到数据库中!") % (end-begin+1)
+			query = """INSERT INTO products_product(MEID,DType,D_Date,WasionBatch,SMSC_Order_No,Remark,Warranty)
+			VALUES (%s,%s,%s,%s,%s,%s,%s)"""
+
+
+
+
+			#存入数据
+			try:
+					for i in range(begin,end+1):
+				
+						a = i 	#表号
+						b = var2    #DType
+						# c = sheet.cell(r,2).value 				#Commu_Method
+						d = var3	#D_Date
+						e = var4    #出厂批次
+						f = var5 	#smsc order no.
+						g = text1	#remark
+						h = var8
+						# e = sheet.cell(r,4).value 				#Modem_IMEI
+						# f = sheet.cell(r,5).value   #SIM_IMSI
+						# g = sheet.cell(r,6).value 				#SIM_ICC_id
+						# h = sheet.cell(r,7).value
+						# i = sheet.cell(r,8).value
+						# j = sheet.cell(r,9).value
+						# k = sheet.cell(r,10).value
+						# l = sheet.cell(r,11).value
+						# m = sheet.cell(r,12).value
+						# n = 					#WasionBatch
+						# o = 					#SMSC_Order_No
+						# p =						#Remark
+						# Assign values from each row 
+						# values = (a,b,,d,,,,,,,,,,n,o,p)
+						values = (a,b,d,e,f,g,h)
+						# Execute sql Query
+						cursor.execute(query, values) 
+
+			except MySQLdb.Error,e:
+						tkMessageBox.showerror("Error", "数据有误,请在excel中查找并修改提示中的重复或者错误项，再尝试重新插入数据！")
+						tkMessageBox.showerror("Error", "数据库中已存在该数据 %d: %s" % (e.args[0], e.args[1]) )
+					#	print "Mysql Error %d: %s" % (e.args[0], e.args[1])
+					#	print "数据有误,请在excel中查找并修改提示中的重复或者错误项，再尝试重新插入数据！"
+
+			else:
+					# Close the cursor
+					cursor.close() 
+					# Commit the transaction
+					database.commit()
+					# Close the database connection 
+					database.close() 
+					 # Print results
+					print "" 
+					print "All Done! Bye, for now." 
+					print "" 
+					
+					#print "I just imported " %2B columns %2B " columns and " %2B rows %2B " rows to MySQL!" Hope this is useful. More to co
+					tkMessageBox.showinfo("showinfo demo","本次成功插入%3s个产品记录到数据库中!"% (end-begin+1))
+
+					print ("本次成功插入%3s个产品记录到数据库中!") % (end-begin+1)
 	else:
 		tkMessageBox.showerror("Error", "If you don't need remark,pls leave this erea empty."  )
 		
@@ -290,7 +564,6 @@ def import_xls():
 
 
 
-
 #GUI
 
 DeskWindow = Tk()
@@ -401,7 +674,7 @@ text.pack()
 bottomFrame = Frame(DeskWindow)  #底部站位框
 bottomFrame.pack()
 bottomLable = Label(bottomFrame,text='                                         ').pack(side=LEFT)
-B1 = Button(bottomFrame,text='导入',fg='red',command=CollectValueAndBatchcreate).pack(side=LEFT)
+B1 = Button(bottomFrame,text='导入',command=CollectValueAndBatchcreate).pack(side=LEFT)
 
 
 
