@@ -357,14 +357,14 @@ def about():
 	w.pack(side=TOP)
 
 # def BulkCreate(began,end):
-def Batchcreate(begin,end,var2,var3,var4,var5,text1,var8): 
+def Batchcreate(begin,end,var2,var3,var4,var5,text1,var8,SMSC): 
 #(begin,end,DType,D_Date,WasionBatch,SMSC_Order_No,Remark)
 	
 	if textereaIsGood():  #是否正常或者是否被清空
 		try:	
 			#链接数据裤
 			# Establish a MySQL connection 
-			database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "cccccc", db = "polldb")
+			database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "CcTqT29L4fwZ8pCs", db = "SMSC")
 			# Get the cursor, which is used to traverse the database, line by line 
 			cursor = database.cursor() 
 		except MySQLdb.Error,e:
@@ -375,8 +375,8 @@ def Batchcreate(begin,end,var2,var3,var4,var5,text1,var8):
 			# LLS_Secret,HLS_Secret,Authentication_Key,Encryption_Key)
 			# VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
-			query = """INSERT INTO products_product(MEID,DType,D_Date,WasionBatch,SMSC_Order_No,Remark,Warranty)
-			VALUES (%s,%s,%s,%s,%s,%s,%s)"""
+			query = """INSERT INTO products_product(MEID,DType,D_Date,WasionBatch,SMSC_Order_No,Remark,Warranty,SMSC_Order_No)
+			VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
 
 
 
@@ -393,6 +393,7 @@ def Batchcreate(begin,end,var2,var3,var4,var5,text1,var8):
 						f = var5 	#smsc order no.
 						g = text1	#remark
 						h = var8
+						sm = SMSC
 						# e = sheet.cell(r,4).value 				#Modem_IMEI
 						# f = sheet.cell(r,5).value   #SIM_IMSI
 						# g = sheet.cell(r,6).value 				#SIM_ICC_id
@@ -407,7 +408,7 @@ def Batchcreate(begin,end,var2,var3,var4,var5,text1,var8):
 						# p =						#Remark
 						# Assign values from each row 
 						# values = (a,b,,d,,,,,,,,,,n,o,p)
-						values = (a,b,d,e,f,g,h)
+						values = (a,b,d,e,f,g,h,sm)
 						# Execute sql Query
 						cursor.execute(query, values) 
 
@@ -458,8 +459,11 @@ def CollectValueAndBatchcreate():
 	ncr = var7.get()
 	Warranty = var8.get()
 	remark = text.get("1.0",END).encode('utf8')
+	print var110.get()
+	smsc = entry110.get()
+	print "smsc:"+str(smsc)
 
-	Batchcreate(first,last,dtype,date,BatchNumber,ncr,remark,Warranty)
+	Batchcreate(first,last,dtype,date,BatchNumber,ncr,remark,Warranty,smsc)
 # 	def Batchcreate(begin,end,var2,var3,var4,var5,text1): 
 #                  (begin,end,DType,D_Date,WasionBatch,SMSC_Order_No,Remark)
 
@@ -476,7 +480,7 @@ def import_xls():
 
 	sheet = workbook.sheet_by_index(0)
 	# Establish a MySQL connection 
-	database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "cccccc", db = "polldb")
+	database = MySQLdb.connect (host="localhost", user = "saxon", passwd = "CcTqT29L4fwZ8pCs", db = "SMSC")
 	 # Get the cursor, which is used to traverse the database, line by line 
 	cursor = database.cursor() 
 	 # Create the INSERT INTO sql query 
@@ -605,6 +609,7 @@ var5  = StringVar()		#texterea = Remark
 var6  = StringVar()		#var6 DeliveryDate
 var7  = StringVar()		#var7 NcrOderNum
 var8  = StringVar()		#var8 Warranty
+var110 = StringVar()    #smsc Number
 
 Label(L2,text = '      DeviceType:      ').pack(side=LEFT)
 
@@ -650,6 +655,18 @@ L8.pack()
  
 Label(L8,text = 'Warranty Period to: ').pack(side=LEFT)
 entry8 = Entry(L8,textvariable=var8,).pack(side=LEFT)     #var7为NCR No.
+
+
+
+
+
+L110 = LabelFrame(DeskWindow,text = '')
+L110.pack()
+ 
+Label(L110,text = 'SMSC Order Number').pack(side=LEFT)
+entry110 = Entry(L110,textvariable=var110,)
+entry110.pack(side=LEFT)     #var110为 SmscOderNumber
+print entry110.get()
 
 
 
