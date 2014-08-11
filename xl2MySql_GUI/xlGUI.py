@@ -29,6 +29,33 @@ class SearchApp_ui(Frame):
         self.master.geometry('491x179')
         self.createWidgets()
 
+
+    def Rename(OriginalName):
+    	#	Rename
+
+        if OriginalName =='Meter equipment identifier':
+        	OriginalName = 'MEID'
+        if OriginalName == 'Device Type':
+        	OrignialName = 'DType'
+        if OriginalName == 'Delivery Date':
+        	OrignialName = 'D_Date'
+        if OriginalName ==	'Wasion Batch Number':
+        	OrignialName =  'Wasion Batch'
+        if OriginalName == 'SMSC Oder Number':
+        	OrignialName = 'SMSC_Order_No'
+        if OriginalName == 'Warranty To':
+        	OrignialName = 'Warranty'
+        if OriginalName == 'NCR Number':
+        	OrignialName = 'NCR'
+        # 
+        # ['Meter equipment identifier','Device Type','Delivery Date','Wasion Batch Number','SMSC Oder Number','Warranty To','Remark','NCR Number']
+        # 'WasionBatchNumber'
+        # 'SMSC_Order_No'
+        # 'Warranty To'
+        # 'Remark'
+        # 'NCR Number' 
+    	pass
+
     def createWidgets(self):
         self.top = self.winfo_toplevel()
 
@@ -36,11 +63,26 @@ class SearchApp_ui(Frame):
 
         self.style.configure('TFrame1.TLabelframe', font=('宋体',9))
         self.style.configure('TFrame1.TLabelframe.Label', font=('宋体',9))
-        self.Frame1 = LabelFrame(self.top, text='Chose you wanna update', style='TFrame1.TLabelframe')
+        self.Frame1 = LabelFrame(self.top, text='Chose you wanna search', style='TFrame1.TLabelframe')
         self.Frame1.place(relx=0.049, rely=0.089, relwidth=0.898, relheight=0.765)
 
         self.Combo1List = ['MEID','DType','Commu_Method',
-            'D_Date','WasionBatch','SMSC_Order_No','Warranty','Remark']
+            'D_Date','WasionBatch','SMSC_Order_No','Warranty','Remark','NCR']
+
+
+        #	Rename
+        # 'Meter equipment identifier'
+        # 'DeviceType'
+        # 'DeliveryDate'
+        # 'WasionBatchNumber'
+        # 'SMSC_Order_No'
+        # 'Warranty To'
+        # 'Remark'
+        # 'NCR Number' 
+
+
+
+
         self.Combo1Var = StringVar(value='MEID')
         self.Combo1 = Combobox(self.Frame1, text='Add items in design or code!', textvariable=self.Combo1Var, values=self.Combo1List, font=('宋体',9))
         self.Combo1.place(relx=0.109, rely=0.467, relwidth=0.819, relheight=0.146)
@@ -211,7 +253,7 @@ class ModiApp_ui(Frame):
         self.Frame2.place(relx=0.12, rely=0.087, relwidth=0.761, relheight=0.263)
 
         self.Combo1List = ['DType','Commu_Method',
-            'D_Date','WasionBatch','SMSC_Order_No','Warranty','Remark']
+            'D_Date','WasionBatch','SMSC_Order_No','Warranty','Remark','NCR']
         self.Combo1Var = StringVar(value='Choose the field you want to modify!')
         self.Combo1 = Combobox(self.Frame2, text='Add items in design or code!', textvariable=self.Combo1Var, values=self.Combo1List, font=('宋体',9))
         self.Combo1.place(relx=0.105, rely=0.412, relwidth=0.79, relheight=0.206)
@@ -264,7 +306,7 @@ class Mocation(ModiApp_ui):
 
         # SQL 更新语句    SET: 下拉框   输入值ModiValue    WHERE:  搜索关键字 搜索A B
         upsql = '''UPDATE products_product 
-                    SET %s = %s     WHERE %s BETWEEN %s and %s '''%(self.Combo1.get(),ModiValue,SEARCHKEYFIELD,KEYA,KEYB)
+                    SET %s = "%s"     WHERE %s BETWEEN %s and %s '''%(self.Combo1.get(),ModiValue,SEARCHKEYFIELD,KEYA,KEYB)
         
         print upsql
         try:
@@ -375,7 +417,7 @@ def Batchcreate(begin,end,var2,var3,var4,var5,text1,var8,SMSC):
 			# LLS_Secret,HLS_Secret,Authentication_Key,Encryption_Key)
 			# VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
-			query = """INSERT INTO products_product(MEID,DType,D_Date,WasionBatch,SMSC_Order_No,Remark,Warranty,SMSC_Order_No)
+			query = """INSERT INTO products_product(MEID,DType,D_Date,WasionBatch,NCR,Remark,Warranty,SMSC_Order_No)
 			VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
 
 
